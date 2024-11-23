@@ -61,3 +61,8 @@ Query optimization is a cornerstone of database management systems, critical for
 - **Rahul Bothra**: bothra2@illinois.edu  
 - **Saharsh Barve**: ssbarve2@illinois.edu  
 - **Omkar Dhekane**: dhekane2@illinois.edu  
+
+## References
+- Bao Tutorial: https://rmarcus.info/bao_docs/tutorial/2_bao_setup.html
+- Bao paper: https://arxiv.org/pdf/2004.03814
+- Bao github repo: https://github.com/learnedsystems/BaoForPostgreSQL
