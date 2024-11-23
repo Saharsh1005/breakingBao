@@ -1,7 +1,6 @@
 # Breaking Bao: Evaluating Bao Optimizer on High-Complexity Benchmarks  
 
-![Breaking Bao Banner](breakingBao/docs/breakingbao-readme-banner.png)
-
+![Breaking Bao Banner](./docs/breakingbao-readme-banner.png)
 ## Introduction  
 Query optimization is a cornerstone of database management systems, critical for efficient data retrieval and processing. This project explores the capabilities and limitations of Bao, a learned query optimizer for PostgreSQL, by testing it on high-complexity benchmarks. We aim to assess Bao’s adaptability and performance in novel scenarios such as skewed data, skewed queries, and dynamic workloads. Our experiments target optimizations in disk I/O, energy efficiency, and cache management while analyzing Bao’s robustness against changes in data and query characteristics.
 
