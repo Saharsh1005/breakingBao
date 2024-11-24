@@ -1,0 +1,199 @@
+--  1. Retrieve all movies and their genres, without filtering by year or specific genre.
+
+SELECT t.title, kt.kind FROM title AS t JOIN kind_type AS kt ON t.kind_id = kt.id;
+
+--  2. List all cast members and their roles for movies made in the 2000s.
+
+SELECT n.name, rt.role FROM name AS n JOIN cast_info AS ci ON n.id = ci.person_id JOIN role_type AS rt ON ci.role_id = rt.id JOIN title AS t ON ci.movie_id = t.id WHERE t.production_year BETWEEN 2000 AND 2009;
+
+--  3. Select all movie titles and their production companies without regional constraints.
+
+SELECT t.title, cn.name FROM title AS t JOIN movie_companies AS mc ON t.id = mc.movie_id JOIN company_name AS cn ON mc.company_id = cn.id;
+
+--  4. Retrieve all movie information types related to the cast across all movies.
+
+SELECT t.title, it.info FROM title AS t JOIN movie_info AS mi ON t.id = mi.movie_id JOIN info_type AS it ON mi.info_type_id = it.id WHERE it.info LIKE '%cast%';
+
+--  5. List all keywords and the number of movies associated with each, grouped by keyword.
+
+SELECT k.keyword, COUNT(mk.movie_id) FROM keyword AS k JOIN movie_keyword AS mk ON k.id = mk.keyword_id GROUP BY k.keyword;
+
+--  6. Retrieve titles of movies along with any associated color information.
+
+SELECT t.title, mi.info FROM title AS t JOIN movie_info AS mi ON t.id = mi.movie_id JOIN info_type AS it ON mi.info_type_id = it.id WHERE it.info LIKE '%color%';
+
+--  7. List all movies produced by a certain company without filtering by company size or location.
+
+SELECT t.title FROM title AS t JOIN movie_companies AS mc ON t.id = mc.movie_id JOIN company_name AS cn ON mc.company_id = cn.id WHERE cn.name LIKE '%Disney%';
+
+--  8. Select all movies and the number of cast members in each, regardless of movie genre or production year.
+
+SELECT t.title, COUNT(ci.person_id) FROM title AS t JOIN cast_info AS ci ON t.id = ci.movie_id GROUP BY t.title;
+
+--  9. Retrieve the most common role types across all movies.
+
+SELECT rt.role, COUNT(*) FROM role_type AS rt JOIN cast_info AS ci ON rt.id = ci.role_id GROUP BY rt.role ORDER BY COUNT(*) DESC;
+
+--  10. List all movies with sound information, irrespective of the sound type.
+
+SELECT t.title, mi.info FROM title AS t JOIN movie_info AS mi ON t.id = mi.movie_id JOIN info_type AS it ON mi.info_type_id = it.id WHERE it.info LIKE '%sound%';
+
+--  11. Retrieve all movie titles and their keywords without focusing on specific keywords.
+
+SELECT t.title, k.keyword FROM title AS t JOIN movie_keyword AS mk ON t.id = mk.movie_id JOIN keyword AS k ON mk.keyword_id = k.id;
+
+--  12. Select all episodes of TV series along with their production years.
+
+SELECT t.title, t.production_year FROM title AS t WHERE t.kind_id = (SELECT id FROM kind_type WHERE kind = 'tv series');
+
+--  13. List all movies with 'drama' elements, grouped by production year.
+
+SELECT t.production_year, COUNT(t.id) FROM title AS t JOIN movie_keyword AS mk ON t.id = mk.movie_id JOIN keyword AS k ON mk.keyword_id = k.id WHERE k.keyword = 'drama' GROUP BY t.production_year;
+
+--  14. Retrieve all company names that have produced at least one movie.
+
+SELECT DISTINCT cn.name FROM company_name AS cn JOIN movie_companies AS mc ON cn.id = mc.company_id;
+
+--  15. Select all movies along with the number of keywords associated with each.
+
+SELECT t.title, COUNT(mk.keyword_id) FROM title AS t JOIN movie_keyword AS mk ON t.id = mk.movie_id GROUP BY t.title;
+
+--  16. List all names and their associated roles in movies made after 1980.
+
+SELECT n.name, rt.role FROM name AS n JOIN cast_info AS ci ON n.id = ci.person_id JOIN role_type AS rt ON ci.role_id = rt.id JOIN title AS t ON ci.movie_id = t.id WHERE t.production_year > 1980;
+
+--  17. Retrieve all movie titles and their directors without filtering by director popularity.
+
+SELECT t.title, n.name FROM title AS t JOIN cast_info AS ci ON t.id = ci.movie_id JOIN name AS n ON ci.person_id = n.id JOIN role_type AS rt ON ci.role_id = rt.id WHERE rt.role = 'director';
+
+--  18. Select all movies produced between 1990 and 2010 with any keyword.
+
+SELECT t.title FROM title AS t JOIN movie_keyword AS mk ON t.id = mk.movie_id WHERE t.production_year BETWEEN 1990 AND 2010;
+
+--  19. List all keywords and the movies associated with them without limiting to popular keywords.
+
+SELECT k.keyword, t.title FROM keyword AS k JOIN movie_keyword AS mk ON k.id = mk.keyword_id JOIN title AS t ON mk.movie_id = t.id;
+
+--  20. Retrieve all actors and the movies they have acted in, irrespective of movie genre.
+
+SELECT n.name, t.title FROM name AS n JOIN cast_info AS ci ON n.id = ci.person_id JOIN title AS t ON ci.movie_id = t.id WHERE ci.role_id = (SELECT id FROM role_type WHERE role = 'actor');
+
+--  21. List all movies and their associated genres without filtering by specific genres.
+
+SELECT t.title, kt.kind FROM title AS t JOIN kind_type AS kt ON t.kind_id = kt.id;
+
+--  22. Select all movies made in the 2000s and their production details.
+
+SELECT t.title, mi.info FROM title AS t JOIN movie_info AS mi ON t.id = mi.movie_id WHERE t.production_year BETWEEN 2000 AND 2009;
+
+--  23. Retrieve all episodes from any series produced in the 1990s.
+
+SELECT t.title FROM title AS t WHERE t.kind_id = (SELECT id FROM kind_type WHERE kind = 'tv series') AND t.production_year BETWEEN 1990 AND 1999;
+
+--  24. List all movie keywords without limiting the selection to specific years or genres.
+
+SELECT k.keyword FROM keyword AS k JOIN movie_keyword AS mk ON k.id = mk.keyword_id;
+
+--  25. Select all names and roles from the cast information table.
+
+SELECT n.name, rt.role FROM name AS n JOIN cast_info AS ci ON n.id = ci.person_id JOIN role_type AS rt ON ci.role_id = rt.id;
+
+--  26. Retrieve all titles and their production details without specific constraints.
+
+SELECT t.title, mi.info FROM title AS t JOIN movie_info AS mi ON t.id = mi.movie_id;
+
+--  27. Find all movies linked to any keyword without constraints.
+
+SELECT t.title FROM title AS t JOIN movie_keyword AS mk ON t.id = mk.movie_id;
+
+--  28. List all production years for any kind of film or episode.
+
+SELECT production_year FROM title;
+
+--  29. Retrieve the full list of movie companies associated with any film.
+
+SELECT DISTINCT cn.name FROM company_name AS cn JOIN movie_companies AS mc ON cn.id = mc.company_id;
+
+--  30. Select all episodes from any series without constraints.
+
+SELECT title FROM title WHERE kind_id = (SELECT id FROM kind_type WHERE kind = 'tv series');
+
+--  31. List all movies produced within the last five years.
+
+SELECT title FROM title WHERE production_year BETWEEN EXTRACT(YEAR FROM CURRENT_DATE) - 5 AND EXTRACT(YEAR FROM CURRENT_DATE);
+
+--  32. Find all movies with any listed production company.
+
+SELECT t.title, cn.name FROM title AS t JOIN movie_companies AS mc ON t.id = mc.movie_id JOIN company_name AS cn ON mc.company_id = cn.id;
+
+--  33. Retrieve all movies without any specific filter on production year.
+
+SELECT title FROM title;
+
+--  34. List all names involved in any movie without specific role constraints.
+
+SELECT DISTINCT n.name FROM name AS n JOIN cast_info AS ci ON n.id = ci.person_id;
+
+--  35. Select all movies and the types of production years without specific year constraints.
+
+SELECT t.title, t.production_year FROM title AS t JOIN kind_type AS kt ON t.kind_id = kt.id WHERE kt.kind IN ('movie', 'tv series');
+
+-- 36. Retrieve all movie information with a focus on production details.
+
+SELECT mi.movie_id, mi.info FROM movie_info AS mi JOIN info_type AS it ON mi.info_type_id = it.id WHERE it.info LIKE '%production%';
+
+--  37. List all movies with any form of color information.
+
+SELECT t.title FROM title AS t JOIN movie_info AS mi ON t.id = mi.movie_id JOIN info_type AS it ON mi.info_type_id = it.id WHERE it.info LIKE '%color%';
+
+--  38. Select all keywords and the number of movies associated with each, grouped by keyword.
+
+SELECT k.keyword, COUNT(mk.movie_id) FROM keyword AS k JOIN movie_keyword AS mk ON k.id = mk.keyword_id GROUP BY k.keyword;
+
+--  39. Retrieve titles of movies along with any associated color information.
+
+SELECT t.title, mi.info FROM title AS t JOIN movie_info AS mi ON t.id = mi.movie_id JOIN info_type AS it ON mi.info_type_id = it.id WHERE it.info LIKE '%color%';
+
+--  40. List all movies produced by a certain company without filtering by company size or location.
+
+SELECT t.title FROM title AS t JOIN movie_companies AS mc ON t.id = mc.movie_id JOIN company_name AS cn ON mc.company_id = cn.id WHERE cn.name LIKE '%Disney%';
+
+--  41. Select all movies and the number of cast members in each, regardless of movie genre or production year.
+
+SELECT t.title, COUNT(ci.person_id) FROM title AS t JOIN cast_info AS ci ON t.id = ci.movie_id GROUP BY t.title;
+
+--  42. Retrieve the most common role types across all movies.
+
+SELECT rt.role, COUNT(*) FROM role_type AS rt JOIN cast_info AS ci ON rt.id = ci.role_id GROUP BY rt.role ORDER BY COUNT(*) DESC;
+
+--  43. List all movies with sound information, irrespective of the sound type.
+
+SELECT t.title, mi.info FROM title AS t JOIN movie_info AS mi ON t.id = mi.movie_id JOIN info_type AS it ON mi.info_type_id = it.id WHERE it.info LIKE '%sound%';
+
+--  44. Retrieve all movie titles and their keywords without focusing on specific keywords.
+
+SELECT t.title, k.keyword FROM title AS t JOIN movie_keyword AS mk ON t.id = mk.movie_id JOIN keyword AS k ON mk.keyword_id = k.id;
+
+--  45. Select all episodes of TV series along with their production years.
+
+SELECT t.title, t.production_year FROM title AS t WHERE t.kind_id = (SELECT id FROM kind_type WHERE kind = 'tv series');
+
+--  46. List all movies with 'drama' elements, grouped by production year.
+
+SELECT t.production_year, COUNT(t.id) FROM title AS t JOIN movie_keyword AS mk ON t.id = mk.movie_id JOIN keyword AS k ON mk.keyword_id = k.id WHERE k.keyword = 'drama' GROUP BY t.production_year;
+
+--  47. Retrieve all company names that have produced at least one movie.
+
+SELECT DISTINCT cn.name FROM company_name AS cn JOIN movie_companies AS mc ON cn.id = mc.company_id;
+
+--  48. Select all movies along with the number of keywords associated with each.
+
+SELECT t.title, COUNT(mk.keyword_id) FROM title AS t JOIN movie_keyword AS mk ON t.id = mk.movie_id GROUP BY t.title;
+
+--  49. List all names and their associated roles in movies made after 1980.
+
+SELECT n.name, rt.role FROM name AS n JOIN cast_info AS ci ON n.id = ci.person_id JOIN role_type AS rt ON ci.role_id = rt.id JOIN title AS t ON ci.movie_id = t.id WHERE t.production_year > 1980;
+
+--  50. Retrieve all movie titles and their directors without filtering by director popularity.
+
+SELECT t.title, n.name FROM title AS t JOIN cast_info AS ci ON t.id = ci.movie_id JOIN name AS n ON ci.person_id = n.id JOIN role_type AS rt ON ci.role_id = rt.id WHERE rt.role = 'director';

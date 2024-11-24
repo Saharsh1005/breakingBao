@@ -1,0 +1,1 @@
+SELECT mi.movie_id, mi.info FROM movie_info AS mi JOIN info_type AS it ON mi.info_type_id = it.id WHERE it.info LIKE '%production%';

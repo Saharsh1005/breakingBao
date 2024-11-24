@@ -1,0 +1,1 @@
+SELECT rt.role, COUNT(*) FROM role_type AS rt JOIN cast_info AS ci ON rt.id = ci.role_id GROUP BY rt.role ORDER BY COUNT(*) DESC;

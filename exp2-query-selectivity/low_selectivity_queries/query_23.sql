@@ -1,0 +1,1 @@
+SELECT t.title FROM title AS t WHERE t.kind_id = (SELECT id FROM kind_type WHERE kind = 'tv series') AND t.production_year BETWEEN 1990 AND 1999;

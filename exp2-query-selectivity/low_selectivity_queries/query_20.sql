@@ -1,0 +1,1 @@
+SELECT n.name, t.title FROM name AS n JOIN cast_info AS ci ON n.id = ci.person_id JOIN title AS t ON ci.movie_id = t.id WHERE ci.role_id = (SELECT id FROM role_type WHERE role = 'actor');

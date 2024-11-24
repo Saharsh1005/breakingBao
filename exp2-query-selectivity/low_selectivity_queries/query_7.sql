@@ -1,0 +1,1 @@
+SELECT t.title FROM title AS t JOIN movie_companies AS mc ON t.id = mc.movie_id JOIN company_name AS cn ON mc.company_id = cn.id WHERE cn.name LIKE '%Disney%';

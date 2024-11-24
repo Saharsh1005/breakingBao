@@ -1,0 +1,1 @@
+SELECT production_year FROM title;

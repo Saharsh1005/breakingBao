@@ -1,0 +1,1 @@
+SELECT DISTINCT n.name FROM name AS n JOIN cast_info AS ci ON n.id = ci.person_id;

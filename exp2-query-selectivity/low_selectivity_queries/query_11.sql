@@ -1,0 +1,1 @@
+SELECT t.title, k.keyword FROM title AS t JOIN movie_keyword AS mk ON t.id = mk.movie_id JOIN keyword AS k ON mk.keyword_id = k.id;

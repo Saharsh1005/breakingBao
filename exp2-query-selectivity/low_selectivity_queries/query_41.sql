@@ -1,0 +1,1 @@
+SELECT t.title, COUNT(ci.person_id) FROM title AS t JOIN cast_info AS ci ON t.id = ci.movie_id GROUP BY t.title;

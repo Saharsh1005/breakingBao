@@ -1,0 +1,1 @@
+SELECT title FROM title WHERE kind_id = (SELECT id FROM kind_type WHERE kind = 'tv series');

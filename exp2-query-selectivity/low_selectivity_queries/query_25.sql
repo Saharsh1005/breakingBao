@@ -1,0 +1,1 @@
+SELECT n.name, rt.role FROM name AS n JOIN cast_info AS ci ON n.id = ci.person_id JOIN role_type AS rt ON ci.role_id = rt.id;
