@@ -1,0 +1,1 @@
+SELECT n.name, COUNT(*) AS production_count FROM name n JOIN cast_info ci ON n.id = ci.person_id JOIN role_type rt ON ci.role_id = rt.id WHERE rt.role = 'producer' GROUP BY n.name ORDER BY production_count DESC LIMIT 15;

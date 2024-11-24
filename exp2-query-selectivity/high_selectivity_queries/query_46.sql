@@ -1,0 +1,1 @@
+SELECT n.name, COUNT(*) AS scripts_written FROM name n JOIN cast_info ci ON n.id = ci.person_id JOIN role_type rt ON ci.role_id = rt.id WHERE rt.role = 'writer' GROUP BY n.name ORDER BY scripts_written DESC LIMIT 10;

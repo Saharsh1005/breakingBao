@@ -1,0 +1,1 @@
+SELECT n.name, COUNT(*) AS appearances FROM name n JOIN cast_info ci ON n.id = ci.person_id JOIN role_type rt ON ci.role_id = rt.id WHERE rt.role = 'actor' GROUP BY n.name ORDER BY appearances DESC LIMIT 10;

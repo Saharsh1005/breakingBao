@@ -1,0 +1,1 @@
+SELECT kt.kind, mi2.info AS country, COUNT(*) AS count FROM title t JOIN kind_type kt ON t.kind_id = kt.id JOIN movie_info mi2 ON t.id = mi2.movie_id JOIN info_type it2 ON mi2.info_type_id = it2.id WHERE t.production_year BETWEEN 1950 AND 1959 AND it2.id = 8 GROUP BY kt.kind, mi2.info ORDER BY count DESC;

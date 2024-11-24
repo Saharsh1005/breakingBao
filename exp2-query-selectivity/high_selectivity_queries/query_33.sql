@@ -1,0 +1,1 @@
+SELECT n.name, COUNT(*) AS designs FROM name n JOIN cast_info ci ON n.id = ci.person_id JOIN role_type rt ON ci.role_id = rt.id JOIN title t ON ci.movie_id = t.id WHERE rt.role = 'production designer' AND n.gender = 'f' AND t.production_year < 2000 GROUP BY n.name ORDER BY designs DESC;

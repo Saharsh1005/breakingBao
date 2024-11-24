@@ -1,0 +1,1 @@
+SELECT n.name, COUNT(*) AS lead_count FROM name n JOIN cast_info ci ON n.id = ci.person_id JOIN role_type rt ON ci.role_id = rt.id WHERE n.gender = 'f' AND rt.role IN ('lead') GROUP BY n.name ORDER BY lead_count DESC LIMIT 10;

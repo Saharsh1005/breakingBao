@@ -1,0 +1,1 @@
+SELECT kt.kind, mi1.info AS camera_info, COUNT(*) FROM movie_info mi1 JOIN title t ON mi1.movie_id = t.id JOIN kind_type kt ON t.kind_id = kt.id WHERE mi1.info LIKE 'CAM:%' GROUP BY kt.kind, mi1.info ORDER BY COUNT(*) DESC;

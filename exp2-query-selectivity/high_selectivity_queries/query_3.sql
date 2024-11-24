@@ -1,0 +1,1 @@
+SELECT t.production_year, k.keyword, COUNT(*) FROM title t JOIN movie_keyword mk ON t.id = mk.movie_id JOIN keyword k ON mk.keyword_id = k.id WHERE k.keyword IN ('murder', 'adventure', 'comedy') GROUP BY t.production_year, k.keyword ORDER BY t.production_year, k.keyword;

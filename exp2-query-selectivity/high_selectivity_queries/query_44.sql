@@ -1,0 +1,1 @@
+SELECT mi.info AS language, COUNT(*) AS language_count FROM movie_info mi JOIN info_type it ON mi.info_type_id = it.id WHERE it.id = 4 GROUP BY mi.info ORDER BY language_count DESC;

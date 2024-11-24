@@ -1,0 +1,1 @@
+SELECT FLOOR(t.production_year / 10) * 10 AS decade, COUNT(*) AS female_directors FROM name n JOIN cast_info ci ON n.id = ci.person_id JOIN role_type rt ON ci.role_id = rt.id JOIN title t ON ci.movie_id = t.id WHERE rt.role = 'director' AND n.gender = 'f' GROUP BY decade ORDER BY decade;

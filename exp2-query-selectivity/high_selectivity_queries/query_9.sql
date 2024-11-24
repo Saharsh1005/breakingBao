@@ -1,0 +1,1 @@
+SELECT n.gender, k.keyword, COUNT(*) FROM name n JOIN cast_info ci ON n.id = ci.person_id JOIN title t ON ci.movie_id = t.id JOIN movie_keyword mk ON t.id = mk.movie_id JOIN keyword k ON mk.keyword_id = k.id WHERE k.keyword IN ('family', 'crime', 'romance') GROUP BY n.gender, k.keyword ORDER BY COUNT(*) DESC;

@@ -1,0 +1,1 @@
+SELECT n.name, COUNT(*) AS action_movies FROM name n JOIN cast_info ci ON n.id = ci.person_id JOIN role_type rt ON ci.role_id = rt.id JOIN title t ON ci.movie_id = t.id JOIN movie_keyword mk ON t.id = mk.movie_id JOIN keyword k ON mk.keyword_id = k.id WHERE rt.role = 'director' AND k.keyword = 'action' GROUP BY n.name ORDER BY action_movies DESC LIMIT 10;

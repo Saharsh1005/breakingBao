@@ -1,0 +1,1 @@
+SELECT mi1.info AS format, COUNT(*) AS count FROM movie_info mi1 JOIN title t ON mi1.movie_id = t.id WHERE t.production_year >= 2000 AND mi1.info LIKE 'OFM:%' GROUP BY mi1.info ORDER BY count DESC;

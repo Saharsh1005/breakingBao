@@ -1,0 +1,1 @@
+SELECT kt.kind, COUNT(*) AS genre_count FROM title t JOIN kind_type kt ON t.kind_id = kt.id GROUP BY kt.kind ORDER BY genre_count DESC;

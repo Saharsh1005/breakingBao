@@ -1,0 +1,1 @@
+SELECT rt.role, t.production_year, COUNT(*) FROM cast_info ci JOIN role_type rt ON ci.role_id = rt.id JOIN title t ON ci.movie_id = t.id WHERE t.production_year BETWEEN 1980 AND 2000 GROUP BY rt.role, t.production_year ORDER BY t.production_year, COUNT(*) DESC;

@@ -1,0 +1,1 @@
+SELECT mi2.info AS country, AVG(mii1.info::FLOAT) AS avg_runtime FROM movie_info mi2 JOIN info_type it2 ON mi2.info_type_id = it2.id JOIN movie_info_idx mii1 ON mi2.movie_id = mii1.movie_id JOIN info_type it1 ON mii1.info_type_id = it1.id WHERE it2.id = 8 AND it1.id = 102 AND mii1.info ~ '^[0-9]+(\.[0-9]*)?$' GROUP BY country ORDER BY avg_runtime DESC;

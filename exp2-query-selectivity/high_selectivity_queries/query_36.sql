@@ -1,0 +1,1 @@
+SELECT k.keyword, AVG(mii1.info::FLOAT) AS avg_rating FROM movie_keyword mk JOIN keyword k ON mk.keyword_id = k.id JOIN title t ON mk.movie_id = t.id JOIN movie_info_idx mii1 ON t.id = mii1.movie_id JOIN info_type it1 ON mii1.info_type_id = it1.id WHERE it1.id = 101 AND mii1.info ~ '^[0-9]+(\.[0-9]*)?$' GROUP BY k.keyword ORDER BY avg_rating DESC LIMIT 20;

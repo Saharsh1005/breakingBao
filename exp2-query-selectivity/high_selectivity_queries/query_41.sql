@@ -1,0 +1,1 @@
+SELECT t.title, t.production_year FROM title t WHERE t.production_year IS NOT NULL ORDER BY t.production_year ASC LIMIT 10;

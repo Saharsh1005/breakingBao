@@ -1,0 +1,1 @@
+SELECT mi.info AS country, COUNT(*) AS production_count FROM movie_info mi JOIN info_type it ON mi.info_type_id = it.id WHERE it.id = 8 GROUP BY mi.info ORDER BY production_count DESC;

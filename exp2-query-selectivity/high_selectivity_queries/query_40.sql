@@ -1,0 +1,1 @@
+SELECT k.keyword, COUNT(*) AS keyword_count FROM keyword k JOIN movie_keyword mk ON k.id = mk.keyword_id GROUP BY k.keyword ORDER BY keyword_count DESC LIMIT 10;

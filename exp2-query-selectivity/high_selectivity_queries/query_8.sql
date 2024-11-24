@@ -1,0 +1,1 @@
+SELECT n.gender, COUNT(*) AS director_count FROM name n JOIN cast_info ci ON n.id = ci.person_id JOIN role_type rt ON ci.role_id = rt.id WHERE rt.role = 'director' GROUP BY n.gender ORDER BY director_count DESC;

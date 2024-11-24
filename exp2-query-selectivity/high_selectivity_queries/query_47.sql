@@ -1,0 +1,1 @@
+SELECT t.production_year, COUNT(*) AS release_count FROM title t WHERE t.production_year IS NOT NULL GROUP BY t.production_year ORDER BY release_count DESC LIMIT 1;

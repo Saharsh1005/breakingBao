@@ -1,0 +1,1 @@
+SELECT kt.kind, k.keyword, COUNT(*) FROM title t JOIN kind_type kt ON t.kind_id = kt.id JOIN movie_keyword mk ON t.id = mk.movie_id JOIN keyword k ON mk.keyword_id = k.id WHERE k.keyword IN ('love', 'war', 'fantasy', 'crime') GROUP BY kt.kind, k.keyword ORDER BY COUNT(*) DESC;

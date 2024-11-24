@@ -1,0 +1,1 @@
+SELECT n.name, COUNT(*) AS male_actor_count FROM name n JOIN cast_info ci ON n.id = ci.person_id JOIN role_type rt ON ci.role_id = rt.id JOIN title t ON ci.movie_id = t.id WHERE rt.role = 'director' AND n.gender = 'm' GROUP BY n.name ORDER BY male_actor_count DESC LIMIT 10;

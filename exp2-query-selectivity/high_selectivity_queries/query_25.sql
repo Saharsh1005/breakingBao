@@ -1,0 +1,1 @@
+SELECT FLOOR(t.production_year / 10) * 10 AS decade, k.keyword, COUNT(*) AS freq FROM title t JOIN movie_keyword mk ON t.id = mk.movie_id JOIN keyword k ON mk.keyword_id = k.id GROUP BY decade, k.keyword ORDER BY decade, freq DESC;

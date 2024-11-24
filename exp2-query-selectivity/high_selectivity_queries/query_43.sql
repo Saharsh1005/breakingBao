@@ -1,0 +1,1 @@
+SELECT n.name, COUNT(*) AS movies_directed FROM name n JOIN cast_info ci ON n.id = ci.person_id JOIN role_type rt ON ci.role_id = rt.id WHERE rt.role = 'director' GROUP BY n.name ORDER BY movies_directed DESC LIMIT 10;

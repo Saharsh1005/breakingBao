@@ -1,0 +1,580 @@
+-- 1. Keyword and Genre Correlation
+SELECT kt.kind, k.keyword, COUNT(*) 
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+WHERE k.keyword IN ('love', 'war', 'fantasy', 'crime')
+GROUP BY kt.kind, k.keyword
+ORDER BY COUNT(*) DESC;
+
+-- 2. Average Production Year by Keyword
+SELECT k.keyword, AVG(t.production_year) AS avg_year
+FROM title t
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+WHERE t.production_year BETWEEN 1900 AND 2020
+GROUP BY k.keyword
+HAVING COUNT(*) > 50;
+
+-- 3. Keyword Trend Over Time
+SELECT t.production_year, k.keyword, COUNT(*) 
+FROM title t
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+WHERE k.keyword IN ('murder', 'adventure', 'comedy')
+GROUP BY t.production_year, k.keyword
+ORDER BY t.production_year, k.keyword;
+
+-- 4. Female Actors in Leading Roles
+SELECT n.name, COUNT(*) AS lead_count
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+WHERE n.gender = 'f' AND rt.role IN ('lead')
+GROUP BY n.name
+ORDER BY lead_count DESC
+LIMIT 10;
+
+-- 5. Role Type Distribution by Year
+SELECT rt.role, t.production_year, COUNT(*) 
+FROM cast_info ci
+JOIN role_type rt ON ci.role_id = rt.id
+JOIN title t ON ci.movie_id = t.id
+WHERE t.production_year BETWEEN 1980 AND 2000
+GROUP BY rt.role, t.production_year
+ORDER BY t.production_year, COUNT(*) DESC;
+
+-- 6. Camera Usage Across Genres
+SELECT kt.kind, mi1.info AS camera_info, COUNT(*)
+FROM movie_info mi1
+JOIN title t ON mi1.movie_id = t.id
+JOIN kind_type kt ON t.kind_id = kt.id
+WHERE mi1.info LIKE 'CAM:%'
+GROUP BY kt.kind, mi1.info
+ORDER BY COUNT(*) DESC;
+
+-- 7. Format Comparison in the 21st Century
+SELECT mi1.info AS format, COUNT(*) AS count
+FROM movie_info mi1
+JOIN title t ON mi1.movie_id = t.id
+WHERE t.production_year >= 2000 AND mi1.info LIKE 'OFM:%'
+GROUP BY mi1.info
+ORDER BY count DESC;
+
+-- 8. Directors by Gender
+SELECT n.gender, COUNT(*) AS director_count
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+WHERE rt.role = 'director'
+GROUP BY n.gender
+ORDER BY director_count DESC;
+
+-- 9. Gender-Based Keyword Focus
+SELECT n.gender, k.keyword, COUNT(*)
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN title t ON ci.movie_id = t.id
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+WHERE k.keyword IN ('family', 'crime', 'romance')
+GROUP BY n.gender, k.keyword
+ORDER BY COUNT(*) DESC;
+
+-- 10. Actors with Specific Keywords and Genres
+SELECT n.name, kt.kind, k.keyword, COUNT(*)
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN title t ON ci.movie_id = t.id
+JOIN kind_type kt ON t.kind_id = kt.id
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+WHERE k.keyword IN ('crime', 'romance') AND kt.kind = 'movie'
+GROUP BY n.name, kt.kind, k.keyword
+ORDER BY COUNT(*) DESC
+LIMIT 20;
+
+-- 11. Keyword and Production Country Correlation
+SELECT mi2.info AS country, k.keyword, COUNT(*) AS usage_count
+FROM movie_info mi2
+JOIN info_type it2 ON mi2.info_type_id = it2.id
+JOIN title t ON mi2.movie_id = t.id
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+WHERE it2.id = 8 AND mi2.info IN ('USA', 'UK', 'France', 'India')
+GROUP BY mi2.info, k.keyword
+ORDER BY usage_count DESC;
+
+-- 12. Decade-Based Keyword Analysis
+SELECT FLOOR(t.production_year / 10) * 10 AS decade, k.keyword, COUNT(*) AS count
+FROM title t
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+WHERE t.production_year BETWEEN 1900 AND 2020
+GROUP BY decade, k.keyword
+ORDER BY decade, count DESC;
+
+-- 13. Role-Specific Contributions
+SELECT n.name, mi2.info AS country, COUNT(*) AS contributions
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+JOIN title t ON ci.movie_id = t.id
+JOIN movie_info mi2 ON t.id = mi2.movie_id
+JOIN info_type it2 ON mi2.info_type_id = it2.id
+WHERE rt.role = 'production designer' AND it2.id = 8 AND mi2.info IN ('Italy', 'USA', 'Japan')
+GROUP BY n.name, mi2.info
+ORDER BY contributions DESC
+LIMIT 10;
+
+-- 14. Production Year Specificity
+SELECT n.name, COUNT(*) AS appearances
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN title t ON ci.movie_id = t.id
+WHERE t.production_year BETWEEN 1990 AND 2000
+GROUP BY n.name
+ORDER BY appearances DESC
+LIMIT 20;
+
+-- 15. Genres and Countries for 1950s Films
+SELECT kt.kind, mi2.info AS country, COUNT(*) AS count
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+JOIN movie_info mi2 ON t.id = mi2.movie_id
+JOIN info_type it2 ON mi2.info_type_id = it2.id
+WHERE t.production_year BETWEEN 1950 AND 1959 AND it2.id = 8
+GROUP BY kt.kind, mi2.info
+ORDER BY count DESC;
+
+-- 16. Role and Gender Dynamics
+SELECT rt.role, n.gender, COUNT(*) AS role_count
+FROM role_type rt
+JOIN cast_info ci ON rt.id = ci.role_id
+JOIN name n ON ci.person_id = n.id
+WHERE rt.role IN ('supporting', 'minor role')
+GROUP BY rt.role, n.gender
+ORDER BY role_count DESC;
+
+-- 17. Female Directors by Decade
+SELECT FLOOR(t.production_year / 10) * 10 AS decade, COUNT(*) AS female_directors
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+JOIN title t ON ci.movie_id = t.id
+WHERE rt.role = 'director' AND n.gender = 'f'
+GROUP BY decade
+ORDER BY decade;
+
+#-- 18. Keyword and Role Interactions
+#SELECT n.name, k.keyword, COUNT(*) AS count
+#FROM name n
+#JOIN cast_info ci ON n.id = ci.person_id
+#JOIN title t ON ci.movie_id = t.id
+#JOIN movie_keyword mk ON t.id = mk.movie_id
+#JOIN keyword k ON mk.keyword_id = k.id
+#WHERE k.keyword IN ('fight', 'battle', 'chase')
+#GROUP BY n.name, k.keyword
+#ORDER BY count DESC
+#LIMIT 15;
+
+#-- 19. Multi-Condition Analysis
+#SELECT DISTINCT n.name, mi2.info AS country, k.keyword
+#FROM name n
+#JOIN cast_info ci ON n.id = ci.person_id
+#JOIN role_type rt ON ci.role_id = rt.id
+#JOIN title t ON ci.movie_id = t.id
+#JOIN movie_info mi2 ON t.id = mi2.movie_id
+#JOIN info_type it2 ON mi2.info_type_id = it2.id
+#JOIN movie_keyword mk ON t.id = mk.movie_id
+#JOIN keyword k ON mk.keyword_id = k.id
+#WHERE rt.role IN ('actor', 'director')
+#  AND k.keyword IN ('crime', 'romance', 'drama') AND mi2.info IN ('USA', 'UK', 'France');
+
+#-- 20. Cross-Info-Type Comparison
+#SELECT mi1.info AS technical_info_1, mi2.info AS technical_info_2, COUNT(*) 
+#FROM movie_info mi1
+#JOIN movie_info mi2 ON mi1.movie_id = mi2.movie_id
+#WHERE mi1.info_type_id = 7 AND mi2.info_type_id = 8
+#  AND mi1.info IN ('OFM:16 mm', 'OFM:35 mm')
+#  AND mi2.info IN ('USA', 'UK', 'India')
+#GROUP BY mi1.info, mi2.info
+#ORDER BY COUNT(*) DESC;
+
+
+-- 21. Most Frequent Genres and Keywords
+SELECT kt.kind, k.keyword, COUNT(*) AS freq
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+WHERE t.production_year BETWEEN 1980 AND 2020
+GROUP BY kt.kind, k.keyword
+ORDER BY freq DESC;
+
+-- 22. Top Directors in Action Movies
+SELECT n.name, COUNT(*) AS action_movies
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+JOIN title t ON ci.movie_id = t.id
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+WHERE rt.role = 'director' AND k.keyword = 'action'
+GROUP BY n.name
+ORDER BY action_movies DESC
+LIMIT 10;
+
+-- 23. Gender Distribution by Role Type
+SELECT rt.role, n.gender, COUNT(*) AS total
+FROM cast_info ci
+JOIN role_type rt ON ci.role_id = rt.id
+JOIN name n ON ci.person_id = n.id
+GROUP BY rt.role, n.gender
+ORDER BY total DESC;
+
+-- 24. Multi-Year Average Ratings for Genres
+SELECT kt.kind, AVG(mii1.info::FLOAT) AS avg_rating
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+JOIN movie_info_idx mii1 ON t.id = mii1.movie_id
+JOIN info_type it1 ON mii1.info_type_id = it1.id
+WHERE it1.id = 101 AND mii1.info ~ '^[0-9]+(\.[0-9]*)?$'
+GROUP BY kt.kind
+ORDER BY avg_rating DESC;
+
+#-- 25. Films with Most Frequent Collaborators
+#SELECT n1.name AS actor1, n2.name AS actor2, COUNT(*) AS collaborations
+#FROM cast_info ci1
+#JOIN name n1 ON ci1.person_id = n1.id
+#JOIN cast_info ci2 ON ci1.movie_id = ci2.movie_id AND ci1.person_id != ci2.person_id
+#JOIN name n2 ON ci2.person_id = n2.id
+#GROUP BY actor1, actor2
+#ORDER BY collaborations DESC
+#LIMIT 15;
+
+-- 26. Country-wise Production of Movies
+SELECT mi2.info AS country, COUNT(*) AS movie_count
+FROM movie_info mi2
+JOIN info_type it2 ON mi2.info_type_id = it2.id
+WHERE it2.id = 8
+GROUP BY country
+ORDER BY movie_count DESC;
+
+-- 27. Year-wise Keyword Trends
+SELECT t.production_year, k.keyword, COUNT(*) AS keyword_count
+FROM title t
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+WHERE t.production_year BETWEEN 1950 AND 2020
+GROUP BY t.production_year, k.keyword
+ORDER BY t.production_year, keyword_count DESC;
+
+-- 28. Directors Who Frequently Work with Male Actors
+SELECT n.name, COUNT(*) AS male_actor_count
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+JOIN title t ON ci.movie_id = t.id
+WHERE rt.role = 'director' AND n.gender = 'm'
+GROUP BY n.name
+ORDER BY male_actor_count DESC
+LIMIT 10;
+
+-- 29. Keyword Popularity Across Decades
+SELECT FLOOR(t.production_year / 10) * 10 AS decade, k.keyword, COUNT(*) AS freq
+FROM title t
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+GROUP BY decade, k.keyword
+ORDER BY decade, freq DESC;
+
+-- 30. Top 10 Countries Producing Documentaries
+SELECT mi2.info AS country, COUNT(*) AS documentary_count
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+JOIN movie_info mi2 ON t.id = mi2.movie_id
+JOIN info_type it2 ON mi2.info_type_id = it2.id
+WHERE kt.kind = 'documentary' AND it2.id = 8
+GROUP BY country
+ORDER BY documentary_count DESC
+LIMIT 10;
+
+-- 31. Movies with Keywords Related to Relationships
+SELECT t.title, k.keyword, t.production_year
+FROM title t
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+WHERE k.keyword IN ('father-son-relationship', 'mother-daughter-relationship', 'romantic-relationship')
+ORDER BY t.production_year DESC;
+
+-- 32. Highest-Rated Sci-Fi Movies
+SELECT t.title, mii1.info AS rating, t.production_year
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+JOIN movie_info_idx mii1 ON t.id = mii1.movie_id
+JOIN info_type it1 ON mii1.info_type_id = it1.id
+WHERE kt.kind = 'sci-fi' AND it1.id = 101 AND mii1.info ~ '^[0-9]+(\.[0-9]*)?$'
+ORDER BY rating::FLOAT DESC
+LIMIT 20;
+
+-- 33. Most Prolific Producers
+SELECT n.name, COUNT(*) AS production_count
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+WHERE rt.role = 'producer'
+GROUP BY n.name
+ORDER BY production_count DESC
+LIMIT 15;
+
+-- 34. Actors with Diverse Roles
+SELECT n.name, COUNT(DISTINCT rt.role) AS role_types
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+GROUP BY n.name
+ORDER BY role_types DESC
+LIMIT 10;
+
+-- 35. Keyword Pair Co-occurrences
+SELECT k1.keyword AS keyword1, k2.keyword AS keyword2, COUNT(*) AS co_occurrence_count
+FROM movie_keyword mk1
+JOIN movie_keyword mk2 ON mk1.movie_id = mk2.movie_id AND mk1.keyword_id < mk2.keyword_id
+JOIN keyword k1 ON mk1.keyword_id = k1.id
+JOIN keyword k2 ON mk2.keyword_id = k2.id
+GROUP BY keyword1, keyword2
+ORDER BY co_occurrence_count DESC
+LIMIT 15;
+
+-- 36. Average Runtime of Movies by Country
+SELECT mi2.info AS country, AVG(mii1.info::FLOAT) AS avg_runtime
+FROM movie_info mi2
+JOIN info_type it2 ON mi2.info_type_id = it2.id
+JOIN movie_info_idx mii1 ON mi2.movie_id = mii1.movie_id
+JOIN info_type it1 ON mii1.info_type_id = it1.id
+WHERE it2.id = 8 AND it1.id = 102 AND mii1.info ~ '^[0-9]+(\.[0-9]*)?$'
+GROUP BY country
+ORDER BY avg_runtime DESC;
+
+-- 37. Female Production Designers Before 2000
+SELECT n.name, COUNT(*) AS designs
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+JOIN title t ON ci.movie_id = t.id
+WHERE rt.role = 'production designer' AND n.gender = 'f' AND t.production_year < 2000
+GROUP BY n.name
+ORDER BY designs DESC;
+
+-- 38. Yearly Film Count with Specific Keywords
+SELECT t.production_year, COUNT(*) AS film_count
+FROM title t
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+WHERE k.keyword IN ('murder', 'war', 'love', 'betrayal')
+GROUP BY t.production_year
+ORDER BY t.production_year;
+
+-- 39. Most Common Production Roles in Horror Movies
+SELECT rt.role, COUNT(*) AS role_count
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+JOIN cast_info ci ON t.id = ci.movie_id
+JOIN role_type rt ON ci.role_id = rt.id
+WHERE kt.kind = 'horror'
+GROUP BY rt.role
+ORDER BY role_count DESC;
+
+-- 40. Keyword Influence on Ratings
+SELECT k.keyword, AVG(mii1.info::FLOAT) AS avg_rating
+FROM movie_keyword mk
+JOIN keyword k ON mk.keyword_id = k.id
+JOIN title t ON mk.movie_id = t.id
+JOIN movie_info_idx mii1 ON t.id = mii1.movie_id
+JOIN info_type it1 ON mii1.info_type_id = it1.id
+WHERE it1.id = 101 AND mii1.info ~ '^[0-9]+(\.[0-9]*)?$'
+GROUP BY k.keyword
+ORDER BY avg_rating DESC
+LIMIT 20;
+
+-- 41. Top 10 Movies by Rating
+SELECT t.title, mii1.info AS rating
+FROM title t
+JOIN movie_info_idx mii1 ON t.id = mii1.movie_id
+JOIN info_type it1 ON mii1.info_type_id = it1.id
+WHERE it1.id = 101 AND mii1.info ~ '^[0-9]+(\.[0-9]*)?$'
+ORDER BY mii1.info::FLOAT DESC
+LIMIT 10;
+
+-- 42. Most Frequent Actors in Movies
+SELECT n.name, COUNT(*) AS appearances
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+WHERE rt.role = 'actor'
+GROUP BY n.name
+ORDER BY appearances DESC
+LIMIT 10;
+
+-- 43. Movies by Genre Count
+SELECT kt.kind, COUNT(*) AS genre_count
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+GROUP BY kt.kind
+ORDER BY genre_count DESC;
+
+-- 44. Most Common Movie Keywords
+SELECT k.keyword, COUNT(*) AS keyword_count
+FROM keyword k
+JOIN movie_keyword mk ON k.id = mk.keyword_id
+GROUP BY k.keyword
+ORDER BY keyword_count DESC
+LIMIT 10;
+
+-- 45. Oldest Movies in Database
+SELECT t.title, t.production_year
+FROM title t
+WHERE t.production_year IS NOT NULL
+ORDER BY t.production_year ASC
+LIMIT 10;
+
+-- 46. Highest-Grossing Movies
+SELECT t.title, mi.info AS gross
+FROM title t
+JOIN movie_info mi ON t.id = mi.movie_id
+JOIN info_type it ON mi.info_type_id = it.id
+WHERE it.id = 107
+ORDER BY mi.info::BIGINT DESC
+LIMIT 10;
+
+-- 47. Directors with Most Movies
+SELECT n.name, COUNT(*) AS movies_directed
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+WHERE rt.role = 'director'
+GROUP BY n.name
+ORDER BY movies_directed DESC
+LIMIT 10;
+
+-- 48. Most Frequently Used Languages in Movies
+SELECT mi.info AS language, COUNT(*) AS language_count
+FROM movie_info mi
+JOIN info_type it ON mi.info_type_id = it.id
+WHERE it.id = 4
+GROUP BY mi.info
+ORDER BY language_count DESC;
+
+-- 49. Average Runtime by Genre
+SELECT kt.kind, AVG(mii1.info::FLOAT) AS avg_runtime
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+JOIN movie_info_idx mii1 ON t.id = mii1.movie_id
+JOIN info_type it1 ON mii1.info_type_id = it1.id
+WHERE it1.id = 102 AND mii1.info ~ '^[0-9]+(\.[0-9]*)?$'
+GROUP BY kt.kind
+ORDER BY avg_runtime DESC;
+
+-- 50. Top 10 Most Prolific Writers
+SELECT n.name, COUNT(*) AS scripts_written
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+WHERE rt.role = 'writer'
+GROUP BY n.name
+ORDER BY scripts_written DESC
+LIMIT 10;
+
+-- 51. Year with Most Movie Releases
+SELECT t.production_year, COUNT(*) AS release_count
+FROM title t
+WHERE t.production_year IS NOT NULL
+GROUP BY t.production_year
+ORDER BY release_count DESC
+LIMIT 1;
+
+-- 52. Movies Released in a Specific Year (2000)
+SELECT t.title, t.production_year
+FROM title t
+WHERE t.production_year = 2000
+ORDER BY t.title;
+
+-- 53. Countries with the Most Movie Productions
+SELECT mi.info AS country, COUNT(*) AS production_count
+FROM movie_info mi
+JOIN info_type it ON mi.info_type_id = it.id
+WHERE it.id = 8
+GROUP BY mi.info
+ORDER BY production_count DESC;
+
+-- 54. Actors Who Frequently Collaborate with a Director
+SELECT d.name AS director, a.name AS actor, COUNT(*) AS collaborations
+FROM cast_info ci1
+JOIN cast_info ci2 ON ci1.movie_id = ci2.movie_id AND ci1.person_id != ci2.person_id
+JOIN name d ON ci1.person_id = d.id
+JOIN name a ON ci2.person_id = a.id
+JOIN role_type rt1 ON ci1.role_id = rt1.id
+JOIN role_type rt2 ON ci2.role_id = rt2.id
+WHERE rt1.role = 'director' AND rt2.role = 'actor'
+GROUP BY director, actor
+ORDER BY collaborations DESC
+LIMIT 10;
+
+-- 55. Genre Popularity Trends Over Decades
+SELECT FLOOR(t.production_year / 10) * 10 AS decade, kt.kind, COUNT(*) AS genre_count
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+WHERE t.production_year IS NOT NULL
+GROUP BY decade, kt.kind
+ORDER BY decade, genre_count DESC;
+
+-- 56. Top Rated Horror Movies
+SELECT t.title, mii1.info AS rating
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+JOIN movie_info_idx mii1 ON t.id = mii1.movie_id
+JOIN info_type it1 ON mii1.info_type_id = it1.id
+WHERE kt.kind = 'horror' AND it1.id = 101 AND mii1.info ~ '^[0-9]+(\.[0-9]*)?$'
+ORDER BY rating::FLOAT DESC
+LIMIT 10;
+
+-- 57. Female Actors with Most Movies
+SELECT n.name, COUNT(*) AS movie_count
+FROM name n
+JOIN cast_info ci ON n.id = ci.person_id
+JOIN role_type rt ON ci.role_id = rt.id
+WHERE rt.role = 'actor' AND n.gender = 'f'
+GROUP BY n.name
+ORDER BY movie_count DESC
+LIMIT 10;
+
+-- 58. Keyword Usage by Genre
+SELECT kt.kind, k.keyword, COUNT(*) AS keyword_count
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+JOIN movie_keyword mk ON t.id = mk.movie_id
+JOIN keyword k ON mk.keyword_id = k.id
+GROUP BY kt.kind, k.keyword
+ORDER BY keyword_count DESC;
+
+-- 59. Most Commonly Used Words in Movie Titles
+SELECT word, COUNT(*) AS word_count
+FROM (
+  SELECT UNNEST(STRING_TO_ARRAY(LOWER(t.title), ' ')) AS word
+  FROM title t
+) subquery
+GROUP BY word
+ORDER BY word_count DESC
+LIMIT 10;
+
+-- 60. Movies by Rating and Genre
+SELECT kt.kind, AVG(mii1.info::FLOAT) AS avg_rating
+FROM title t
+JOIN kind_type kt ON t.kind_id = kt.id
+JOIN movie_info_idx mii1 ON t.id = mii1.movie_id
+JOIN info_type it1 ON mii1.info_type_id = it1.id
+WHERE it1.id = 101 AND mii1.info ~ '^[0-9]+(\.[0-9]*)?$'
+GROUP BY kt.kind
+ORDER BY avg_rating DESC;

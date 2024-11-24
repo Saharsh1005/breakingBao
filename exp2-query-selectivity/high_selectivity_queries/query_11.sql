@@ -1,0 +1,1 @@
+SELECT mi2.info AS country, k.keyword, COUNT(*) AS usage_count FROM movie_info mi2 JOIN info_type it2 ON mi2.info_type_id = it2.id JOIN title t ON mi2.movie_id = t.id JOIN movie_keyword mk ON t.id = mk.movie_id JOIN keyword k ON mk.keyword_id = k.id WHERE it2.id = 8 AND mi2.info IN ('USA', 'UK', 'France', 'India') GROUP BY mi2.info, k.keyword ORDER BY usage_count DESC;
