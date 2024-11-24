@@ -1,1 +1,0 @@
-SELECT t.title, kt.kind FROM title AS t JOIN kind_type AS kt ON t.kind_id = kt.id;

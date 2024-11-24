@@ -1,0 +1,1 @@
+SELECT word, COUNT(*) AS word_count FROM (SELECT UNNEST(STRING_TO_ARRAY(LOWER(t.title), ' ')) AS word FROM title t) subquery GROUP BY word ORDER BY word_count DESC LIMIT 10;

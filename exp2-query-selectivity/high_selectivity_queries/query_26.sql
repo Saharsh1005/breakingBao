@@ -1,1 +1,0 @@
-SELECT mi2.info AS country, COUNT(*) AS documentary_count FROM title t JOIN kind_type kt ON t.kind_id = kt.id JOIN movie_info mi2 ON t.id = mi2.movie_id JOIN info_type it2 ON mi2.info_type_id = it2.id WHERE kt.kind = 'documentary' AND it2.id = 8 GROUP BY country ORDER BY documentary_count DESC LIMIT 10;

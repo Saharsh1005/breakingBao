@@ -1,1 +1,0 @@
-SELECT t.title, mi.info AS gross FROM title t JOIN movie_info mi ON t.id = mi.movie_id JOIN info_type it ON mi.info_type_id = it.id WHERE it.id = 107 ORDER BY mi.info::BIGINT DESC LIMIT 10;

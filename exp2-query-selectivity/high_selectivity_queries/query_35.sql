@@ -1,1 +1,0 @@
-SELECT rt.role, COUNT(*) AS role_count FROM title t JOIN kind_type kt ON t.kind_id = kt.id JOIN cast_info ci ON t.id = ci.movie_id JOIN role_type rt ON ci.role_id = rt.id WHERE kt.kind = 'horror' GROUP BY rt.role ORDER BY role_count DESC;
