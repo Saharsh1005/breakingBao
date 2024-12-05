@@ -8,49 +8,43 @@ Query optimization is a cornerstone of database management systems, critical for
 
 ## Tasks  
 
-### **1. Data Transformations I**  
-- **Remove/Add Columns (Light Changes)**  
+### **1. Query Transformations I**  
+- Modified ImDb queries**  
   **IC:** *Vidhi Rambhia*  
-  - Experiment with removing or adding `n` columns in datasets.  
-  - Analyze how Bao handles schema evolution and dynamic changes.  
+  - Analyze how Bao handles schema evolution and dynamic changes (slightly modified queries).  
   - Visualize results through graphs showcasing the impact on performance.
 
-### **2. Data Transformations II**  
+### **2. Query Transformations II**  
 - **Skew Data**  
   **IC:** *Saharsh Barve*  
-  - Cluster the dataset into `n` distribution clusters (low and high distances between clusters).  
+  - Test bao on queries with mixed selectivity workloads (high selectivity | low selectivity).  
   - Train Bao on one cluster and evaluate its accuracy on others.  
   - Study performance metrics like execution efficiency and query accuracy.  
 
 ---
 
-### **3. Query Transformations**  
-- **Skew Query**  
-  - Develop skewed query patterns and evaluate Bao’s response using `EXPLAIN`.  
-  - Investigate how skew impacts optimization strategies and execution plans.
+### **3. Data Transformations**  
+- **Schema Changes**  
+  - Dropped indexes to evaluate resilience to structural modifications
+  - Investigate how this impacts optimization strategies and execution plans.
 
 ---
 
-### **4. Optimization Objectives**  
-**IC:** *Rahul Bothra*  
-- Evaluate Bao’s optimization for:  
-  - **Disk I/O**  
-  - **Energy efficiency**  
-  - **Cache misses**  
+### **4. TPC-H Benchmarks**  
+**IC:** *Vidhi Rhambia*  
 
 ---
 
-### **4. Literature Review**  
-**IC:** *Omkar Dhekane*  
-- Write a 1-page review summarizing related work and papers.  
+### **4. Paper Writing**  
+**IC:** *Rahul*  
 - Focus on:  
   - Strategies that have "broken" query optimizers.  
   - Comparing our work with Bao and its benchmarks without redundancy.  
 
 ---
 
-### **TBD Tasks**  
-- Finalize **Writing** sections.  
+### **Slides**  
+**IC:** *Omkar Dhekane* 
 - Prepare **Slides** for project presentations.  
 
 ---
