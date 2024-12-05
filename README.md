@@ -31,7 +31,7 @@ Query optimization is a cornerstone of database management systems, critical for
 ---
 
 ### **4. TPC-H Benchmarks**  
-**IC:** *Vidhi Rhambia*  
+**IC:** *Vidhi Rambhia*  
 
 ---
 
