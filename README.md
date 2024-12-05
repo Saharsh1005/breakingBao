@@ -36,7 +36,7 @@ Query optimization is a cornerstone of database management systems, critical for
 ---
 
 ### **4. Paper Writing**  
-**IC:** *Rahul*  
+**IC:** *Rahul Bothra*  
 - Focus on:  
   - Strategies that have "broken" query optimizers.  
   - Comparing our work with Bao and its benchmarks without redundancy.  
